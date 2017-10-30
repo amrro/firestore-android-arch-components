@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class RatingUtil {
 
-    public static final String[] REVIEW_CONTENTS = {
+    private static final String[] REVIEW_CONTENTS = {
             // 0 - 1 stars
             "This was awful! Totally inedible.",
 
@@ -49,7 +49,7 @@ public class RatingUtil {
         double sum = 0.0;
 
         for (Rating rating : ratings) {
-            sum += rating.getRating();
+            sum += rating.rating;
         }
 
         return (sum / ratings.size());
@@ -58,7 +58,7 @@ public class RatingUtil {
     /**
      * Create a random Rating POJO.
      */
-    public static Rating getRandom() {
+    private static Rating getRandom() {
         Rating rating = new Rating();
 
         Random random = new Random();
@@ -66,10 +66,10 @@ public class RatingUtil {
         double score = random.nextDouble() * 5.0;
         String text = REVIEW_CONTENTS[(int) Math.floor(score)];
 
-        rating.setUserId(UUID.randomUUID().toString());
-        rating.setUserName("Random User");
-        rating.setRating(score);
-        rating.setText(text);
+        rating.userId = UUID.randomUUID().toString();
+        rating.userName = "Random User";
+        rating.rating = score;
+        rating.text = text;
 
         return rating;
     }

@@ -10,13 +10,13 @@ import java.util.Date;
 /**
  * Model POJO for a rating.
  */
-public class Rating {
+public class Rating extends Model {
 
-    private String userId;
-    private String userName;
-    private double rating;
-    private String text;
-    private @ServerTimestamp
+    public String userId;
+    public String userName;
+    public double rating;
+    public String text;
+    public @ServerTimestamp
     Date timestamp;
 
     public Rating() {
@@ -31,45 +31,5 @@ public class Rating {
 
         this.rating = rating;
         this.text = text;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 }

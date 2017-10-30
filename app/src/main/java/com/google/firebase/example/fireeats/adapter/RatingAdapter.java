@@ -44,8 +44,8 @@ public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
 
         void bind(Rating rating) {
             this.binding.setRate(rating);
-            if (rating.getTimestamp() != null) {
-                binding.ratingItemDate.setText(FORMAT.format(rating.getTimestamp()));
+            if (rating.timestamp != null) {
+                binding.ratingItemDate.setText(FORMAT.format(rating.timestamp));
             }
         }
     }

@@ -74,8 +74,8 @@ public final class Repository {
 
             // Create random restaurant / ratings
             Restaurant randomRestaurant = RestaurantUtil.getRandom(context);
-            List<Rating> randomRatings = RatingUtil.getRandomList(randomRestaurant.getNumRatings());
-            randomRestaurant.setAvgRating(RatingUtil.getAverageRating(randomRatings));
+            List<Rating> randomRatings = RatingUtil.getRandomList(randomRestaurant.numRatings);
+            randomRestaurant.avgRating = RatingUtil.getAverageRating(randomRatings);
 
             // Add restaurant
             batch.set(restRef, randomRestaurant);

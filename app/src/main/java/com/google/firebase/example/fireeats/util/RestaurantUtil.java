@@ -31,7 +31,7 @@ public class RestaurantUtil {
 
     private static final ThreadPoolExecutor EXECUTOR =
             new ThreadPoolExecutor(2, 4, 60,
-                    TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+                    TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     private static final String RESTAURANT_URL_FMT = "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_%d.png";
     private static final int MAX_IMAGE_NUM = 22;
@@ -76,12 +76,12 @@ public class RestaurantUtil {
 
         int[] prices = new int[]{1, 2, 3};
 
-        restaurant.setName(getRandomName(random));
-        restaurant.setCity(getRandomString(cities, random));
-        restaurant.setCategory(getRandomString(categories, random));
-        restaurant.setPhoto(getRandomImageUrl(random));
-        restaurant.setPrice(getRandomInt(prices, random));
-        restaurant.setNumRatings(random.nextInt(20));
+        restaurant.name = getRandomName(random);
+        restaurant.city = getRandomString(cities, random);
+        restaurant.category = getRandomString(categories, random);
+        restaurant.photo = getRandomImageUrl(random);
+        restaurant.price = getRandomInt(prices, random);
+        restaurant.numRatings = random.nextInt(20);
 
         // Note: average rating intentionally not set
 
@@ -103,7 +103,7 @@ public class RestaurantUtil {
      * Get price represented as dollar signs.
      */
     public static String getPriceString(Restaurant restaurant) {
-        return restaurant != null ? getPriceString(restaurant.getPrice()) : null;
+        return restaurant != null ? getPriceString(restaurant.price) : null;
     }
 
     /**

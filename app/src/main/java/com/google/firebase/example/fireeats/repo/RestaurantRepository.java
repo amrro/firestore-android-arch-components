@@ -52,15 +52,15 @@ public final class RestaurantRepository {
             Restaurant restaurant = transaction.get(restaurantRef).toObject(Restaurant.class);
 
             // Compute new number of ratings
-            int newNumRatings = restaurant.getNumRatings() + 1;
+            int newNumRatings = restaurant.numRatings + 1;
 
             // Compute new average rating
-            double oldRatingTotal = restaurant.getAvgRating() * restaurant.getNumRatings();
-            double newAvgRating = (oldRatingTotal + rating.getRating()) / newNumRatings;
+            double oldRatingTotal = restaurant.avgRating * restaurant.numRatings;
+            double newAvgRating = (oldRatingTotal + rating.rating) / newNumRatings;
 
             // Set new restaurant info
-            restaurant.setNumRatings(newNumRatings);
-            restaurant.setAvgRating(newAvgRating);
+            restaurant.numRatings = newNumRatings;
+            restaurant.avgRating = newAvgRating;
 
             // Commit to Firestore
             transaction.set(restaurantRef, restaurant);
