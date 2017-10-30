@@ -2,8 +2,9 @@ package com.google.firebase.example.fireeats.repo;
 
 
 import android.content.Context;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
+import com.google.firebase.example.fireeats.QueryLiveData;
 import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.ui.main.Filters;
@@ -15,30 +16,25 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 public final class Repository {
 
     public static final int LIMIT = 10;
-    public static final String TAG = "Repository";
+
     private final FirebaseFirestore firestore;
 
-    public Repository(FirebaseFirestore firestore) {
-        this(firestore, true);
+    public Repository() {
+        FirebaseFirestore.setLoggingEnabled(true);
+        this.firestore = FirebaseFirestore.getInstance();
     }
 
-    public Repository(FirebaseFirestore firebaseFirestore, boolean loggingEnabled) {
-        FirebaseFirestore.setLoggingEnabled(loggingEnabled);
-        this.firestore = firebaseFirestore;
+    public QueryLiveData<Restaurant> restaurants(@NonNull final Filters filters) {
+        return new QueryLiveData<>(toQuery(filters), Restaurant.class);
     }
 
-    public Query restaurants() {
-        return restaurants(null);
-    }
-
-    public Query restaurants(final Filters filters) {
+    private Query toQuery(final Filters filters) {
         // Construct query basic query
         Query query = firestore.collection("restaurants");
 
@@ -67,7 +63,7 @@ public final class Repository {
         }
 
         // Limit items
-        return query.limit(LIMIT);
+        return query;
     }
 
     public void addRestaurants(final Context context) {
@@ -92,17 +88,14 @@ public final class Repository {
 
         batch.commit().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "Write batch succeeded.");
+                Timber.d("Write batch succeeded.");
             } else {
-                Log.w(TAG, "write batch failed.", task.getException());
+                Timber.w("write batch failed.", task.getException());
             }
         });
     }
 
     public void deleteAll() {
-        final ThreadPoolExecutor executor =
-                new ThreadPoolExecutor(2, 4, 60,
-                        TimeUnit.SECONDS, new LinkedBlockingQueue<>());
         RestaurantUtil.deleteAll(firestore.collection("restaurants"));
     }
 }

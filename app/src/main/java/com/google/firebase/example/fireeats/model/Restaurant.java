@@ -6,7 +6,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
  * Restaurant POJO.
  */
 @IgnoreExtraProperties
-public class Restaurant {
+public class Restaurant extends Model {
 
     public static final String FIELD_CITY = "city";
     public static final String FIELD_CATEGORY = "category";

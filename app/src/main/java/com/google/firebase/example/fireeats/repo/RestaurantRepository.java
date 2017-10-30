@@ -2,7 +2,7 @@ package com.google.firebase.example.fireeats.repo;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.example.fireeats.CompletionLiveData;
-import com.google.firebase.example.fireeats.EventLiveData;
+import com.google.firebase.example.fireeats.DocumentLiveData;
 import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,12 +27,12 @@ public final class RestaurantRepository {
                 .limit(50);
     }
 
-    public EventLiveData<Restaurant> restaurant(final String id) {
+    public DocumentLiveData<Restaurant> restaurant(final String id) {
         if (id == null) {
             return null;
         }
         final DocumentReference restaurantRef = restaurants.document(id);
-        EventLiveData<Restaurant> data = new EventLiveData<>(restaurantRef, Restaurant.class);
+        DocumentLiveData<Restaurant> data = new DocumentLiveData<>(restaurantRef, Restaurant.class);
         restaurantRef.addSnapshotListener(data);
         return data;
     }

@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
@@ -15,25 +14,21 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.adapter.RestaurantAdapter;
 import com.google.firebase.example.fireeats.databinding.ActivityMainBinding;
+import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.repo.Repository;
 import com.google.firebase.example.fireeats.ui.detail.RestaurantDetailActivity;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements
-        FilterDialogFragment.FilterListener,
-        RestaurantAdapter.OnRestaurantSelectedListener {
+        FilterDialogFragment.FilterListener {
 
     private static final int RC_SIGN_IN = 9001;
 
+    private RestaurantAdapter adapter;
     private ActivityMainBinding binding;
     private FilterDialogFragment mFilterDialog;
-    private RestaurantAdapter mAdapter;
-    private RestaurantsViewModel viewModel;
-    private Repository repository;
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +37,7 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(binding.toolbar);
 
         // View model
-        viewModel = ViewModelProviders.of(this).get(RestaurantsViewModel.class);
-        repository = new Repository(FirebaseFirestore.getInstance());
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         initRecycler();
 
         binding.setHandler(clear -> {
@@ -59,17 +53,12 @@ public class MainActivity extends AppCompatActivity implements
         viewModel.isSignedIn().observe(this, isSigned -> {
             // Start sign in if necessary
             //noinspection ConstantConditions
-            if (! isSigned) {
-                startSignIn();
-                return;
-            }
+            if (! isSigned) startSignIn();
+        });
 
-            // Apply filters
-            onFilter(viewModel.getFilters());
-
-            // Start listening for Firestore updates
-            if (mAdapter != null) {
-                mAdapter.startListening();
+        viewModel.restaurants().observe(this, listResource -> {
+            if (listResource.isSuccessful()) {
+                adapter.replace(listResource.data());
             }
         });
 
@@ -78,31 +67,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initRecycler() {
-        // RecyclerView
-        mAdapter = new RestaurantAdapter(repository.restaurants(), this) {
-            @Override
-            protected void onDataChanged() {
-                // Show/hide content if the query returns empty.
-                binding.setNoData(getItemCount() == 0);
-            }
-
-            @Override
-            protected void onError(FirebaseFirestoreException e) {
-                Snackbar.make(findViewById(android.R.id.content),
-                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
-            }
-        };
-
+        adapter = new RestaurantAdapter(this::onRestaurantSelected);
         binding.recycler.setLayoutManager(new LinearLayoutManager(this));
-        binding.recycler.setAdapter(mAdapter);
-    }
+        binding.recycler.setAdapter(adapter);
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
     }
 
     @Override
@@ -113,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: 10/30/17 remove this
+        final Repository repository = new Repository();
         switch (item.getItemId()) {
             case R.id.menu_add_items:
                 repository.addRestaurants(this);
@@ -138,11 +108,10 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onRestaurantSelected(DocumentSnapshot restaurant) {
+    public void onRestaurantSelected(Restaurant restaurant) {
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, RestaurantDetailActivity.class);
-        intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_ID, restaurant.getId());
+        intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_ID, restaurant.id);
 
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
@@ -150,9 +119,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFilter(Filters filters) {
-        // Update the query
-        mAdapter.setQuery(repository.restaurants(filters));
-
         // Set header
         binding.textCurrentSearch.setText(Html.fromHtml(filters.getSearchDescription(this)));
         binding.textCurrentSortBy.setText(filters.getOrderDescription(this));

@@ -9,13 +9,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 
 
-public class EventLiveData<T> extends LiveData<Resource<T>>
+public class DocumentLiveData<T> extends LiveData<Resource<T>>
         implements EventListener<DocumentSnapshot> {
     private final Class<T> type;
     private ListenerRegistration registration;
     private final DocumentReference ref;
 
-    public EventLiveData(DocumentReference ref, Class<T> type) {
+    public DocumentLiveData(DocumentReference ref, Class<T> type) {
         this.ref = ref;
         this.type = type;
     }
