@@ -1,5 +1,6 @@
 package com.google.firebase.example.fireeats.ui.detail;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,22 +15,17 @@ import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.adapter.RatingAdapter;
 import com.google.firebase.example.fireeats.databinding.ActivityRestaurantDetailBinding;
 import com.google.firebase.example.fireeats.model.Rating;
-import com.google.firebase.example.fireeats.repo.RestaurantRepository;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import timber.log.Timber;
 
 public class RestaurantDetailActivity extends AppCompatActivity
-        implements /*EventListener<DocumentSnapshot>,*/ RatingDialogFragment.RatingListener {
+        implements RatingDialogFragment.RatingListener {
     public static final String KEY_RESTAURANT_ID = "key_restaurant_id";
 
     private ActivityRestaurantDetailBinding binding;
     private RatingDialogFragment mRatingDialog;
-
-    private RatingAdapter mRatingAdapter;
-    private RestaurantRepository repository;
-    String restaurantId;
+    private RatingAdapter adapter;
+    private RatingViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +34,30 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
         // Get restaurant ID from extras
         //noinspection ConstantConditions
-        restaurantId = getIntent().getExtras().getString(KEY_RESTAURANT_ID, null);
+        final String restaurantId = getIntent().getExtras().getString(KEY_RESTAURANT_ID, null);
+
         if (restaurantId == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_RESTAURANT_ID);
         }
-        repository = new RestaurantRepository(FirebaseFirestore.getInstance());
+        initRecycler();
+
+        viewModel = ViewModelProviders.of(this).get(RatingViewModel.class);
+        viewModel.setRestaurantId(restaurantId).ratings().observe(this, listResource -> {
+            if (listResource.isSuccessful(R)) {
+                adapter.replace(listResource.data());
+            }
+        });
+
+        viewModel.restaurant().observe(this, response -> {
+            if (response != null) {
+                if (response.isSuccessful()) {
+                    binding.setRestaurant(response.data());
+                } else {
+                    Toast.makeText(this, response.error().getMessage(), Toast.LENGTH_SHORT).show();
+                    Timber.e(response.error());
+                }
+            }
+        });
 
         binding.setHandler(backPressed -> {
             if (backPressed) {
@@ -52,44 +67,13 @@ public class RestaurantDetailActivity extends AppCompatActivity
             mRatingDialog.show(getSupportFragmentManager(), RatingDialogFragment.TAG);
         });
 
-        initRecycler(repository.ratings(restaurantId));
-
-        repository.restaurant(restaurantId).observe(this, resource -> {
-            if (resource != null) {
-                if (resource.isSuccessful()) {
-                    binding.setRestaurant(resource.data());
-                } else {
-                    Toast.makeText(this, resource.error().getMessage(), Toast.LENGTH_SHORT).show();
-                    Timber.e(resource.error());
-                }
-            }
-        });
-
         mRatingDialog = new RatingDialogFragment();
     }
 
-    private void initRecycler(Query ratingsQuery) {
-        // RecyclerView
-        mRatingAdapter = new RatingAdapter(ratingsQuery) {
-            @Override
-            protected void onDataChanged() {
-                binding.setNoReviews(getItemCount() == 0);
-            }
-        };
+    private void initRecycler() {
+        adapter = new RatingAdapter();
         binding.recyclerRatings.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerRatings.setAdapter(mRatingAdapter);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mRatingAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mRatingAdapter.stopListening();
+        binding.recyclerRatings.setAdapter(adapter);
     }
 
     @Override
@@ -102,7 +86,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
     @Override
     public void onRating(Rating rating) {
         // In a transaction, add the new rating and update the aggregate totals
-        repository.addRating(restaurantId, rating).observe(this, resource -> {
+        viewModel.addRating(rating).observe(this, resource -> {
             hideKeyboard();
             if (resource.isSuccessful()) {
                 // scroll to top

@@ -3,6 +3,7 @@ package com.google.firebase.example.fireeats.repo;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.example.fireeats.CompletionLiveData;
 import com.google.firebase.example.fireeats.DocumentLiveData;
+import com.google.firebase.example.fireeats.QueryLiveData;
 import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.firestore.CollectionReference;
@@ -14,17 +15,21 @@ import com.google.firebase.firestore.Query;
 public final class RestaurantRepository {
     private final CollectionReference restaurants;
 
-    public RestaurantRepository(final FirebaseFirestore firestore) {
+    public RestaurantRepository() {
         FirebaseFirestore.setLoggingEnabled(true);
-        this.restaurants = firestore.collection("restaurants");
+        this.restaurants = FirebaseFirestore.getInstance().collection("restaurants");
 
     }
 
-    public Query ratings(final String id) {
+    private Query query(final String id) {
         return restaurants.document(id)
                 .collection("ratings")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(50);
+    }
+
+    public QueryLiveData<Rating> ratings(final String id) {
+        return new QueryLiveData<>(query(id), Rating.class);
     }
 
     public DocumentLiveData<Restaurant> restaurant(final String id) {
