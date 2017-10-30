@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.common;
 
 import android.arch.lifecycle.LiveData;
 

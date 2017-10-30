@@ -27,15 +27,14 @@ public class RestaurantDetailActivity extends AppCompatActivity
     private RatingAdapter adapter;
     private RatingViewModel viewModel;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_restaurant_detail);
 
         // Get restaurant ID from extras
-        //noinspection ConstantConditions
         final String restaurantId = getIntent().getExtras().getString(KEY_RESTAURANT_ID, null);
-
         if (restaurantId == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_RESTAURANT_ID);
         }
@@ -43,19 +42,16 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
         viewModel = ViewModelProviders.of(this).get(RatingViewModel.class);
         viewModel.setRestaurantId(restaurantId).ratings().observe(this, listResource -> {
-            if (listResource.isSuccessful(R)) {
+            if (listResource.isSuccessful()) {
                 adapter.replace(listResource.data());
             }
         });
-
         viewModel.restaurant().observe(this, response -> {
-            if (response != null) {
-                if (response.isSuccessful()) {
-                    binding.setRestaurant(response.data());
-                } else {
-                    Toast.makeText(this, response.error().getMessage(), Toast.LENGTH_SHORT).show();
-                    Timber.e(response.error());
-                }
+            if (response.isSuccessful()) {
+                binding.setRestaurant(response.data());
+            } else {
+                Toast.makeText(this, response.error().getMessage(), Toast.LENGTH_SHORT).show();
+                Timber.e(response.error());
             }
         });
 
@@ -93,7 +89,6 @@ public class RestaurantDetailActivity extends AppCompatActivity
                 Timber.d("Rating added");
                 binding.recyclerRatings.smoothScrollToPosition(0);
             } else {
-                // Show failure message
                 Timber.e(resource.error());
                 Snackbar.make(findViewById(android.R.id.content), "Failed to add rating",
                         Snackbar.LENGTH_SHORT).show();
