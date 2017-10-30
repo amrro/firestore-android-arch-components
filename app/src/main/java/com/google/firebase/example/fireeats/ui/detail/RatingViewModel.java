@@ -5,8 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
-import com.google.firebase.example.fireeats.CompletionLiveData;
-import com.google.firebase.example.fireeats.Resource;
+import com.google.firebase.example.fireeats.common.CompletionLiveData;
+import com.google.firebase.example.fireeats.common.Resource;
 import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.repo.RestaurantRepository;

@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.common;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

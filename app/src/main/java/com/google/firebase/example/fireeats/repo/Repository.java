@@ -4,7 +4,7 @@ package com.google.firebase.example.fireeats.repo;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.google.firebase.example.fireeats.QueryLiveData;
+import com.google.firebase.example.fireeats.common.QueryLiveData;
 import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.ui.main.Filters;

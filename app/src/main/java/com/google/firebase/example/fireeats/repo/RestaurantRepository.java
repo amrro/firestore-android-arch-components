@@ -1,9 +1,9 @@
 package com.google.firebase.example.fireeats.repo;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.example.fireeats.CompletionLiveData;
-import com.google.firebase.example.fireeats.DocumentLiveData;
-import com.google.firebase.example.fireeats.QueryLiveData;
+import com.google.firebase.example.fireeats.common.CompletionLiveData;
+import com.google.firebase.example.fireeats.common.DocumentLiveData;
+import com.google.firebase.example.fireeats.common.QueryLiveData;
 import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.firestore.CollectionReference;

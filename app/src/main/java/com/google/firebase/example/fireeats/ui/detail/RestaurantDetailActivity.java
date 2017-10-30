@@ -43,7 +43,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
         viewModel = ViewModelProviders.of(this).get(RatingViewModel.class);
         viewModel.setRestaurantId(restaurantId).ratings().observe(this, listResource -> {
-            if (listResource.isSuccessful(R)) {
+            if (listResource.isSuccessful()) {
                 adapter.replace(listResource.data());
             }
         });
