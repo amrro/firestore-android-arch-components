@@ -8,17 +8,18 @@ import com.google.firebase.example.fireeats.model.Rating;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 
 public final class RestaurantRepository {
     private final CollectionReference restaurants;
 
-    public RestaurantRepository() {
-        FirebaseFirestore.setLoggingEnabled(true);
-        this.restaurants = FirebaseFirestore.getInstance().collection("restaurants");
-
+    @Inject
+    public RestaurantRepository(@Named("restaurants") CollectionReference restaurants) {
+        this.restaurants = restaurants;
     }
 
     private Query query(final String id) {

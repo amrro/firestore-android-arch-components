@@ -12,6 +12,8 @@ import com.google.firebase.example.fireeats.repo.MainRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * ViewModel for {@link MainActivity}.
  */
@@ -20,10 +22,12 @@ public class MainViewModel extends ViewModel {
     private final LiveData<Boolean> isSignedIn;
     private final MutableLiveData<Filters> filters = new MutableLiveData<>();
     private final LiveData<Resource<List<Restaurant>>> restaurants;
+    private final MainRepository repository;
 
 
-    public MainViewModel() {
-        final MainRepository repository = new MainRepository();
+    @Inject
+    MainViewModel(MainRepository repository) {
+        this.repository = repository;
         filters.setValue(Filters.getDefault());
         isSignedIn = new LiveData<Boolean>() {
             @Override
@@ -50,5 +54,9 @@ public class MainViewModel extends ViewModel {
 
     LiveData<Resource<List<Restaurant>>> restaurants() {
         return restaurants;
+    }
+
+    public MainRepository getRepository() {
+        return repository;
     }
 }

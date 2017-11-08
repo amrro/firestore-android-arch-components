@@ -1,10 +1,8 @@
 package com.google.firebase.example.fireeats.ui.main;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.view.Menu;
@@ -13,6 +11,7 @@ import android.view.MenuItem;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.adapter.RestaurantAdapter;
+import com.google.firebase.example.fireeats.common.BaseActivity;
 import com.google.firebase.example.fireeats.databinding.ActivityMainBinding;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.repo.MainRepository;
@@ -20,7 +19,7 @@ import com.google.firebase.example.fireeats.ui.detail.RestaurantDetailActivity;
 
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity implements
+public class MainActivity extends BaseActivity implements
         FilterDialogFragment.FilterListener {
 
     private static final int RC_SIGN_IN = 9001;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(binding.toolbar);
 
         // View model
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel = getViewModel(MainViewModel.class);
         initRecycler();
 
         binding.setHandler(clear -> {
@@ -79,10 +78,11 @@ public class MainActivity extends AppCompatActivity implements
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO: 10/30/17 remove this
-        final MainRepository repository = new MainRepository();
+        // TODO: 10/30/17 respect the design remove repository from here.
+        MainRepository repository = viewModel.getRepository();
         switch (item.getItemId()) {
             case R.id.menu_add_items:
                 repository.addRestaurants(this);

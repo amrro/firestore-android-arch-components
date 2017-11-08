@@ -17,15 +17,17 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import timber.log.Timber;
 
 public final class MainRepository {
 
     private final FirebaseFirestore firestore;
 
-    public MainRepository() {
-        FirebaseFirestore.setLoggingEnabled(true);
-        this.firestore = FirebaseFirestore.getInstance();
+    @Inject
+    public MainRepository(FirebaseFirestore store) {
+        this.firestore = store;
     }
 
     public QueryLiveData<Restaurant> restaurants(@NonNull final Filters filters) {

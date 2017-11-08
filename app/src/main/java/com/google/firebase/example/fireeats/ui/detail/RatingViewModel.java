@@ -13,6 +13,8 @@ import com.google.firebase.example.fireeats.repo.RestaurantRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 public final class RatingViewModel extends ViewModel {
     private final RestaurantRepository repository;
@@ -20,10 +22,11 @@ public final class RatingViewModel extends ViewModel {
     private final LiveData<Resource<Restaurant>> restaurant;
     private final LiveData<Resource<List<Rating>>> ratings;
 
-    public RatingViewModel() {
-        repository = new RestaurantRepository();
-        restaurant = Transformations.switchMap(id, input -> repository.restaurant(input));
-        ratings = Transformations.switchMap(id, input -> repository.ratings(input));
+    @Inject
+    RatingViewModel(RestaurantRepository repository) {
+        this.repository = repository;
+        restaurant = Transformations.switchMap(id, repository::restaurant);
+        ratings = Transformations.switchMap(id, repository::ratings);
     }
 
     RatingViewModel setRestaurantId(final String id) {

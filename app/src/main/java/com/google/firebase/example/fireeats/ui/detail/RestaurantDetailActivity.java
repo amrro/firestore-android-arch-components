@@ -1,11 +1,9 @@
 package com.google.firebase.example.fireeats.ui.detail;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,12 +11,13 @@ import android.widget.Toast;
 
 import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.adapter.RatingAdapter;
+import com.google.firebase.example.fireeats.common.BaseActivity;
 import com.google.firebase.example.fireeats.databinding.ActivityRestaurantDetailBinding;
 import com.google.firebase.example.fireeats.model.Rating;
 
 import timber.log.Timber;
 
-public class RestaurantDetailActivity extends AppCompatActivity
+public class RestaurantDetailActivity extends BaseActivity
         implements RatingDialogFragment.RatingListener {
     public static final String KEY_RESTAURANT_ID = "key_restaurant_id";
 
@@ -40,7 +39,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
         }
         initRecycler();
 
-        viewModel = ViewModelProviders.of(this).get(RatingViewModel.class);
+        viewModel = getViewModel(RatingViewModel.class);
         viewModel.setRestaurantId(restaurantId).ratings().observe(this, listResource -> {
             if (listResource.isSuccessful()) {
                 adapter.replace(listResource.data());
