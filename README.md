@@ -4,8 +4,16 @@
 
 Fire Eats is a restaurant recommendation app built on Cloud Firestore alongside Android Architecture Component.
 
+After reading about the new Android Architecture Component's [guide][aac-aguide] to architect your app. I converted the orignal sample presented by firebase to use the component with respect due architecture recommendation in the guide.
+
+<a href="https://developer.android.com/topic/libraries/architecture/guide.html#the_final_architecture">
+<img src="https://developer.android.com/topic/libraries/architecture/images/final-architecture.png">
+</a>
+
+
 For more information about Firestore visit [the docs][firestore-docs].
 For more information about Android Architecture Components visit [the docs][aac-docs].
+
 
 
 ## Getting Started
@@ -84,3 +92,5 @@ add all of these indexes programatically using the [Firebase CLI][firebase-cli].
 [auth-providers]: https://console.firebase.google.com/project/_/authentication/providers
 [firebaseui]: https://github.com/firebase/FirebaseUI-Android
 [firebase-cli]: https://firebase.google.com/docs/firestore/query-data/indexing#use_the_firebase_cli
+[aac-aguide]: https://developer.android.com/topic/libraries/architecture/guide.html
+[final-arch]: https://developer.android.com/topic/libraries/architecture/guide.html#the_final_architecture
