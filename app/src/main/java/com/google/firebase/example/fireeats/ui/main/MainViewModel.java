@@ -8,7 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.example.fireeats.common.Resource;
 import com.google.firebase.example.fireeats.model.Restaurant;
-import com.google.firebase.example.fireeats.repo.Repository;
+import com.google.firebase.example.fireeats.repo.MainRepository;
 
 import java.util.List;
 
@@ -19,11 +19,11 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
     private final LiveData<Boolean> isSignedIn;
     private final MutableLiveData<Filters> filters = new MutableLiveData<>();
-    private LiveData<Resource<List<Restaurant>>> restaurants;
+    private final LiveData<Resource<List<Restaurant>>> restaurants;
 
 
     public MainViewModel() {
-        final Repository repository = new Repository();
+        final MainRepository repository = new MainRepository();
         filters.setValue(Filters.getDefault());
         isSignedIn = new LiveData<Boolean>() {
             @Override

@@ -15,7 +15,7 @@ import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.adapter.RestaurantAdapter;
 import com.google.firebase.example.fireeats.databinding.ActivityMainBinding;
 import com.google.firebase.example.fireeats.model.Restaurant;
-import com.google.firebase.example.fireeats.repo.Repository;
+import com.google.firebase.example.fireeats.repo.MainRepository;
 import com.google.firebase.example.fireeats.ui.detail.RestaurantDetailActivity;
 
 import java.util.Collections;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO: 10/30/17 remove this
-        final Repository repository = new Repository();
+        final MainRepository repository = new MainRepository();
         switch (item.getItemId()) {
             case R.id.menu_add_items:
                 repository.addRestaurants(this);

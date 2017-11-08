@@ -5,6 +5,10 @@ import android.support.annotation.NonNull;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+/**
+ * A Base Model to be extended by other models to add ids.
+ */
+
 @IgnoreExtraProperties
 public class Model {
     @Exclude

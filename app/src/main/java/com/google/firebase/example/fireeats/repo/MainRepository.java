@@ -19,13 +19,11 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public final class Repository {
-
-    public static final int LIMIT = 10;
+public final class MainRepository {
 
     private final FirebaseFirestore firestore;
 
-    public Repository() {
+    public MainRepository() {
         FirebaseFirestore.setLoggingEnabled(true);
         this.firestore = FirebaseFirestore.getInstance();
     }
@@ -62,7 +60,7 @@ public final class Repository {
             }
         }
 
-        // Limit items
+        /* query could be limited like: query.limit(5) */
         return query;
     }
 
@@ -80,7 +78,7 @@ public final class Repository {
             // Add restaurant
             batch.set(restRef, randomRestaurant);
 
-            // Add ratings to subcollection
+            // Add ratings to sub-collection
             for (Rating rating : randomRatings) {
                 batch.set(restRef.collection("ratings").document(), rating);
             }

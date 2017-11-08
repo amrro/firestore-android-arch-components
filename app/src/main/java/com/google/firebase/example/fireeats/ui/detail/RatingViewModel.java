@@ -15,10 +15,10 @@ import java.util.List;
 
 
 public final class RatingViewModel extends ViewModel {
-    private RestaurantRepository repository;
-    final private MutableLiveData<String> id = new MutableLiveData<>();
-    final private LiveData<Resource<Restaurant>> restaurant;
-    final private LiveData<Resource<List<Rating>>> ratings;
+    private final RestaurantRepository repository;
+    private final MutableLiveData<String> id = new MutableLiveData<>();
+    private final LiveData<Resource<Restaurant>> restaurant;
+    private final LiveData<Resource<List<Rating>>> ratings;
 
     public RatingViewModel() {
         repository = new RestaurantRepository();

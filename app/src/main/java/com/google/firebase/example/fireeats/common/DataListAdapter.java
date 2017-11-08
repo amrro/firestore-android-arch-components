@@ -22,7 +22,7 @@ import java.util.Objects;
 public abstract class DataListAdapter<T, V extends ViewDataBinding>
         extends RecyclerView.Adapter<DataViewHolder<V>> {
 
-    protected OnItemClickedListener<T> listener;
+    protected final OnItemClickedListener<T> listener;
     @Nullable
     private List<T> items;
     // each time data is set, we update this variable so that if DiffUtil calculation returns
