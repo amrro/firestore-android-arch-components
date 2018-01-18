@@ -1,20 +1,21 @@
 package com.google.firebase.example.fireeats.di;
 
-import com.google.firebase.example.fireeats.FriendlyEatsApp;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 
 @Singleton
 @Component(modules = {
-        AndroidInjectionModule.class,
+        AndroidSupportInjectionModule.class,
         AppModule.class,
         FirebaseModule.class,
         ActivitiesModule.class,
 })
-public interface AppComponent {
-    void inject(FriendlyEatsApp app);
+interface AppComponent extends AndroidInjector<DaggerApplication> {
+
 }

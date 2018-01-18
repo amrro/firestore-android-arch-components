@@ -26,7 +26,6 @@ public abstract class ViewModelModule {
     @ViewModelKey(RatingViewModel.class)
     abstract ViewModel bindRatingViewModel(RatingViewModel viewModel);
 
-
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
 }
