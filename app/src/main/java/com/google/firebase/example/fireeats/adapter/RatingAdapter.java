@@ -11,10 +11,6 @@ import com.google.firebase.example.fireeats.model.Rating;
 
 
 public final class RatingAdapter extends DataListAdapter<Rating, ItemRatingBinding> {
-    public RatingAdapter() {
-        super(item -> {
-        });
-    }
 
     @Override
     protected ItemRatingBinding createBinding(LayoutInflater inflater, ViewGroup parent) {
@@ -25,4 +21,5 @@ public final class RatingAdapter extends DataListAdapter<Rating, ItemRatingBindi
     protected void bind(ItemRatingBinding binding, Rating item) {
         binding.setRate(item);
     }
+
 }

@@ -22,16 +22,11 @@ import java.util.Objects;
 public abstract class DataListAdapter<T, V extends ViewDataBinding>
         extends RecyclerView.Adapter<DataViewHolder<V>> {
 
-    protected final OnItemClickedListener<T> listener;
     @Nullable
     private List<T> items;
     // each time data is set, we update this variable so that if DiffUtil calculation returns
     // after repetitive updates, we can ignore the old calculation
     private int dataVersion = 0;
-
-    public DataListAdapter(final OnItemClickedListener<T> listener) {
-        this.listener = Objects.requireNonNull(listener, "listener cannot be null");
-    }
 
     @Override
     public final DataViewHolder<V> onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -119,7 +114,6 @@ public abstract class DataListAdapter<T, V extends ViewDataBinding>
     protected boolean areContentsTheSame(T oldItem, T newItem) {
         return Objects.equals(oldItem, newItem);
     }
-
 
     @Override
     public int getItemCount() {

@@ -27,8 +27,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class RestaurantUtil {
 
-    private static final String TAG = "RestaurantUtil";
-
     private static final ThreadPoolExecutor EXECUTOR =
             new ThreadPoolExecutor(2, 4, 60,
                     TimeUnit.SECONDS, new LinkedBlockingQueue<>());

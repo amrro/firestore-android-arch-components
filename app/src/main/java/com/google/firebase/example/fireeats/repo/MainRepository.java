@@ -26,7 +26,7 @@ public final class MainRepository {
     private final FirebaseFirestore firestore;
 
     @Inject
-    public MainRepository(FirebaseFirestore store) {
+    MainRepository(FirebaseFirestore store) {
         this.firestore = store;
     }
 
@@ -90,7 +90,7 @@ public final class MainRepository {
             if (task.isSuccessful()) {
                 Timber.d("Write batch succeeded.");
             } else {
-                Timber.w("write batch failed.", task.getException());
+                Timber.w(task.getException(), "write batch failed.");
             }
         });
     }
@@ -98,4 +98,5 @@ public final class MainRepository {
     public void deleteAll() {
         RestaurantUtil.deleteAll(firestore.collection("restaurants"));
     }
+
 }

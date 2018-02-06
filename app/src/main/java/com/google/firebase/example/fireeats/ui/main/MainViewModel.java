@@ -56,7 +56,7 @@ public class MainViewModel extends ViewModel {
         return restaurants;
     }
 
-    public MainRepository getRepository() {
+    MainRepository getRepository() {
         return repository;
     }
 }
