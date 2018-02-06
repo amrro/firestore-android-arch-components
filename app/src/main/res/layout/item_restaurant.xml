@@ -10,18 +10,23 @@
             name="restaurant"
             type="com.google.firebase.example.fireeats.model.Restaurant" />
 
+        <variable
+            name="restaurantClickHandler"
+            type="com.google.firebase.example.fireeats.adapter.RestaurantClickHandler" />
+
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
+        android:onClick="@{(view)-> restaurantClickHandler.onRestaurantClicked(restaurant)}"
         android:orientation="vertical"
         android:padding="8dp">
 
         <ImageView
-            imageUrl="@{restaurant.photo}"
             android:id="@+id/restaurant_item_image"
+            imageUrl="@{restaurant.photo}"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="#757575"
@@ -36,21 +41,25 @@
             android:layout_alignTop="@+id/restaurant_item_image"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="-2dp"
+            android:layout_toEndOf="@+id/restaurant_item_image"
             android:layout_toLeftOf="@+id/restaurant_item_price"
             android:layout_toRightOf="@+id/restaurant_item_image"
+            android:layout_toStartOf="@+id/restaurant_item_price"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{restaurant.name}"
+
             tools:text="Foo's Bar" />
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/restaurant_item_rating"
             style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
+            setRating="@{restaurant.avgRating}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            setRating="@{restaurant.avgRating}"
             android:layout_alignLeft="@+id/restaurant_item_name"
+            android:layout_alignStart="@+id/restaurant_item_name"
             android:layout_below="@+id/restaurant_item_name"
             android:layout_marginBottom="4dp" />
 
@@ -62,6 +71,8 @@
             android:layout_alignBottom="@+id/restaurant_item_rating"
             android:layout_alignTop="@+id/restaurant_item_rating"
             android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/restaurant_item_rating"
             android:layout_toRightOf="@+id/restaurant_item_rating"
             android:gravity="center_vertical"
             android:text="@{@string/fmt_num_ratings(restaurant.numRatings)}"
@@ -74,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/restaurant_item_name"
+            android:layout_alignStart="@+id/restaurant_item_name"
             android:layout_below="@+id/restaurant_item_rating"
             android:text="@{restaurant.category}"
             android:textColor="@color/greySecondary"
@@ -83,6 +95,7 @@
             android:id="@+id/restaurant_item_city_divider"
             style="@style/AppTheme.TextDivider"
             android:layout_alignTop="@+id/restaurant_item_category"
+            android:layout_toEndOf="@+id/restaurant_item_category"
             android:layout_toRightOf="@+id/restaurant_item_category"
             android:text="@string/divider_bullet" />
 
@@ -90,10 +103,11 @@
             android:id="@+id/restaurant_item_city"
             style="@style/AppTheme.Body1"
             android:layout_width="wrap_content"
-            android:text="@{restaurant.city}"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/restaurant_item_category"
+            android:layout_toEndOf="@+id/restaurant_item_city_divider"
             android:layout_toRightOf="@+id/restaurant_item_city_divider"
+            android:text="@{restaurant.city}"
             android:textColor="@color/greySecondary"
             tools:text="San Francisco" />
 
@@ -102,6 +116,7 @@
             style="@style/AppTheme.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="@{RestaurantUtil.getPriceString(restaurant)}"
             android:textColor="@color/greySecondary"

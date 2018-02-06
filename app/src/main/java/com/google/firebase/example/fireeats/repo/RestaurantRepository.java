@@ -18,7 +18,7 @@ public final class RestaurantRepository {
     private final CollectionReference restaurants;
 
     @Inject
-    public RestaurantRepository(@Named("restaurants") CollectionReference restaurants) {
+    RestaurantRepository(@Named("restaurants") CollectionReference restaurants) {
         this.restaurants = restaurants;
     }
 

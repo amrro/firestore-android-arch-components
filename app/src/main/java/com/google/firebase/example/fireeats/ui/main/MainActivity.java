@@ -13,9 +13,7 @@ import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.adapter.RestaurantAdapter;
 import com.google.firebase.example.fireeats.common.BaseActivity;
 import com.google.firebase.example.fireeats.databinding.ActivityMainBinding;
-import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.repo.MainRepository;
-import com.google.firebase.example.fireeats.ui.detail.RestaurantDetailActivity;
 
 import java.util.Collections;
 
@@ -52,7 +50,7 @@ public class MainActivity extends BaseActivity implements
         viewModel.isSignedIn().observe(this, isSigned -> {
             // Start sign in if necessary
             //noinspection ConstantConditions
-            if (! isSigned) startSignIn();
+            if (!isSigned) startSignIn();
         });
 
         viewModel.restaurants().observe(this, listResource -> {
@@ -66,7 +64,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void initRecycler() {
-        adapter = new RestaurantAdapter(this::onRestaurantSelected);
+        adapter = new RestaurantAdapter(this);
         binding.recycler.setLayoutManager(new LinearLayoutManager(this));
         binding.recycler.setAdapter(adapter);
 
@@ -106,15 +104,6 @@ public class MainActivity extends BaseActivity implements
                 startSignIn();
             }
         }
-    }
-
-    public void onRestaurantSelected(Restaurant restaurant) {
-        // Go to the details page for the selected restaurant
-        Intent intent = new Intent(this, RestaurantDetailActivity.class);
-        intent.putExtra(RestaurantDetailActivity.KEY_RESTAURANT_ID, restaurant.id);
-
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
     }
 
     @Override
